@@ -1,6 +1,7 @@
 package com.alurafood.pagamentos.controllers;
 
-import com.alurafood.pagamentos.dto.PagamentoDTO;
+import com.alurafood.pagamentos.dtos.PagamentoDTO;
+import com.alurafood.pagamentos.enums.Status;
 import com.alurafood.pagamentos.services.PagamentoService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,11 @@ public class PagamentoController {
     @DeleteMapping("/{id}")
     public void deletar(long id) {
         pagamentoService.delete(id);
+    }
+
+    @PatchMapping("{id}/confimar")
+    public void confimarPagamento(@PathVariable @NotNull long id){
+        this.pagamentoService.confimarPedido(id);
     }
 
 }

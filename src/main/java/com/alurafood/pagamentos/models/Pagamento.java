@@ -48,7 +48,6 @@ public class Pagamento {
     @Size(max = 3, min = 3)
     private String codigo;
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private Status status;
 
