@@ -70,4 +70,15 @@ public class PagamentoService {
 
     }
 
+    public void alterarStatus(Long id){
+        Pagamento pagamento = pagamentoRepository.findById(id)
+                                        .orElseThrow(EntityNotFoundException::new);
+       
+       pagamento.setStatus(Status.CONFIRMADO_SEM_INTEGRACAO);  
+       this.pagamentoRepository.save(pagamento);
+                      
+
+    }
+
+
 }

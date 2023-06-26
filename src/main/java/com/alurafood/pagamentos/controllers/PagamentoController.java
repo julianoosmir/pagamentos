@@ -3,6 +3,8 @@ package com.alurafood.pagamentos.controllers;
 import com.alurafood.pagamentos.dtos.PagamentoDTO;
 import com.alurafood.pagamentos.enums.Status;
 import com.alurafood.pagamentos.services.PagamentoService;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,9 +46,14 @@ public class PagamentoController {
         pagamentoService.delete(id);
     }
 
-    @PatchMapping("{id}/confimar")
-    public void confimarPagamento(@PathVariable @NotNull long id){
+    @PatchMapping("/{id}/confirmar")
+    @CircuitBreaker(name = "atualizaPedido", fallbackMethod = "pagamentoAutorizadoComIntegracaoPendente")
+    public void confirmarPagamento(@PathVariable @NotNull Long id) {
         this.pagamentoService.confimarPedido(id);
+    }
+
+    public void pagamentoAutorizadoComIntegracaoPendente(@PathVariable @NotNull Long id, Exception e) {
+        this.pagamentoService.alterarStatus(id);
     }
 
 }
