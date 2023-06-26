@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class PagamentoDTO {
-    private long id;
+        private long id;
     private BigDecimal valor;
     private String nome;
     private String numero;
