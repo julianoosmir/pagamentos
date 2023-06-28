@@ -27,6 +27,7 @@ public class PagamentoController {
 
     @GetMapping
     public Page<PagamentoDTO> listar(@PageableDefault(size = 10) Pageable paginacao) {
+
         return pagamentoService.obterTodos(paginacao);
     }
 
@@ -39,8 +40,9 @@ public class PagamentoController {
     @PostMapping
     public ResponseEntity<PagamentoDTO> criar(@RequestBody @NotNull PagamentoDTO dto) {
         PagamentoDTO pagamentoDTO = pagamentoService.criarPagamento(dto);
-        Message message = new Message(("criei um pagamento com id : " + pagamentoDTO.getId()).getBytes());
-        rabbitTemplate.send("pagamento.concluido",message);
+       // Message message = new Message(("criei um pagamento com id : " + pagamentoDTO.getId()).getBytes());
+      //  rabbitTemplate.convertAndSend("pagamento.concluido",pagamentoDTO);
+        rabbitTemplate.convertAndSend("pagamentos.ex","",pagamentoDTO);
         return ResponseEntity.ok(pagamentoDTO);
     }
 
